@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", ];
 
 function ClassForm({ onSave, onUpdate, editingClass }) {
   const [form, setForm] = useState({
@@ -114,6 +114,28 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
         value={form.reminderMinutes}
         onChange={handleChange}
       />
+       
+       <input
+  type="text"
+  name="notes"
+  placeholder="Class notes (optional)"
+  value={form.notes}
+  onChange={handleChange}
+/>
+
+<input
+  type="url"
+  name="materials"
+  placeholder="Materials URL (optional)"
+  value={form.materials}
+  onChange={handleChange}
+/>
+<textarea
+  name="notes"
+  placeholder="Class notes"
+  value={form.notes}
+  onChange={handleChange}
+/>
 
       <div>
         <p>Select days:</p>
