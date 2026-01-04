@@ -1,13 +1,33 @@
-import { useState } from "react";
-import { createClass } from "../utils/classmodel";
-import { DAYS } from "../utils/days";
+import { useEffect, useState } from "react";
 
-function ClassForm({ onSave }) {
-  const [form, setForm] = useState(createClass());
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+function ClassForm({ onSave, onUpdate, editingClass }) {
+  const [form, setForm] = useState({
+    id: null,
+    name: "",
+    startTime: "",
+    endTime: "",
+    days: [],
+    venue: "",
+    reminderMinutes: 10,
+    lastNotifiedDate: null
+  });
+
+  /**
+   * When user clicks "Edit", we receive editingClass from App.jsx.
+   * We COPY it into local state so we can safely modify inputs
+   * without mutating global state directly.
+   */
+  useEffect(() => {
+    if (editingClass) {
+      setForm(editingClass);
+    }
+  }, [editingClass]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleDayToggle = (day) => {
@@ -22,18 +42,40 @@ function ClassForm({ onSave }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.startTime || !form.endTime || form.days.length === 0) {
-      alert("Please fill all required fields");
+    // Basic validation
+    if (!form.name || !form.startTime || !form.days.length) {
+      alert("Please fill all required fields.");
       return;
     }
 
-    onSave(form);
-    setForm(createClass());
+    if (editingClass) {
+      // EDIT mode: preserve id + lastNotifiedDate
+      onUpdate(form);
+    } else {
+      // ADD mode: generate a stable ID
+      onSave({
+        ...form,
+        id: crypto.randomUUID(),
+        lastNotifiedDate: null
+      });
+    }
+
+    // Reset form after submit
+    setForm({
+      id: null,
+      name: "",
+      startTime: "",
+      endTime: "",
+      days: [],
+      venue: "",
+      reminderMinutes: 10,
+      lastNotifiedDate: null
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Add Class</h2>
+    <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+      <h2>{editingClass ? "Edit Class" : "Add Class"}</h2>
 
       <input
         type="text"
@@ -42,19 +84,6 @@ function ClassForm({ onSave }) {
         value={form.name}
         onChange={handleChange}
       />
-
-      <div>
-        {DAYS.map((day) => (
-          <label key={day}>
-            <input
-              type="checkbox"
-              checked={form.days.includes(day)}
-              onChange={() => handleDayToggle(day)}
-            />
-            {day}
-          </label>
-        ))}
-      </div>
 
       <input
         type="time"
@@ -71,14 +100,6 @@ function ClassForm({ onSave }) {
       />
 
       <input
-        type="number"
-        name="reminderMinutes"
-        value={form.reminderMinutes}
-        onChange={handleChange}
-        min="1"
-      />
-
-      <input
         type="text"
         name="venue"
         placeholder="Venue"
@@ -86,7 +107,31 @@ function ClassForm({ onSave }) {
         onChange={handleChange}
       />
 
-      <button type="submit">Save Class</button>
+      <input
+        type="number"
+        name="reminderMinutes"
+        min="1"
+        value={form.reminderMinutes}
+        onChange={handleChange}
+      />
+
+      <div>
+        <p>Select days:</p>
+        {DAYS.map((day) => (
+          <label key={day} style={{ marginRight: "8px" }}>
+            <input
+              type="checkbox"
+              checked={form.days.includes(day)}
+              onChange={() => handleDayToggle(day)}
+            />
+            {day}
+          </label>
+        ))}
+      </div>
+
+      <button type="submit">
+        {editingClass ? "Update Class" : "Add Class"}
+      </button>
     </form>
   );
 }

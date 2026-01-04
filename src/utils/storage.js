@@ -19,3 +19,20 @@ export const setClasses = (classes) => {
     JSON.stringify(classes)
   );
 };
+
+export const updateClass = (updatedClass) => {
+  const classes = getClasses();
+
+  const newClasses = classes.map((c) =>
+    c.id === updatedClass.id ? updatedClass : c
+  );
+
+  setClasses(newClasses);
+};
+
+export const deleteClass = (id) => {
+  const classes = getClasses();
+  const newClasses = classes.filter((c) => c.id !== id);
+  setClasses(newClasses);
+};
+

@@ -1,32 +1,23 @@
 import { DAYS } from "../utils/days";
 
-function Timetable({ classes }) {
+function Timetable({ classes, onEdit, onDelete }) {
   return (
     <div>
-      <h2>Weekly Timetable</h2>
+      <h2>Your Timetable</h2>
 
-      {DAYS.map((day) => {
-        const dayClasses = classes.filter((c) =>
-          c.days.includes(day)
-        );
+      {classes.length === 0 && <p>No classes added.</p>}
 
-        if (dayClasses.length === 0) return null;
+      {classes.map((c) => (
+        <div key={c.id} style={{ border: "1px solid #ccc", padding: "8px", marginBottom: "8px" }}>
+          <p><strong>{c.name}</strong></p>
+          <p>{c.days.join(", ")} | {c.startTime} – {c.endTime}</p>
+          <p>Venue: {c.venue}</p>
+          <p>Reminder: {c.reminderMinutes} minutes before</p>
 
-        return (
-          <div key={day}>
-            <h3>{day}</h3>
-            <ul>
-              {dayClasses.map((c) => (
-                <li key={c.id}>
-                  <strong>{c.name}</strong><br />
-                  {c.startTime} – {c.endTime}<br />
-                  {c.venue}
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      })}
+          <button onClick={() => onEdit(c)}>Edit</button>
+          <button onClick={() => onDelete(c.id)}>Delete</button>
+        </div>
+      ))}
     </div>
   );
 }
