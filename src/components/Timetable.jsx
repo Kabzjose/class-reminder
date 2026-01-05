@@ -19,6 +19,11 @@ function Timetable({ classes, onEdit, onDelete }) {
   DAYS.forEach((day) => {
     dayMap[day].sort((a, b) => a.startTime.localeCompare(b.startTime));
   });
+  DAYS.forEach((day) => {
+  dayMap[day].sort((a, b) =>
+    a.startTime.localeCompare(b.startTime)
+  );
+});
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "16px" }}>
@@ -51,7 +56,7 @@ function Timetable({ classes, onEdit, onDelete }) {
                     <a href={c.materials} target="_blank" rel="noopener noreferrer">Link</a>
                   </p>
                 )}
-
+               
                 <div style={{ display: "flex", gap: "4px", marginTop: "4px" }}>
                   <button onClick={() => onEdit(c)}>Edit</button>
                   <button onClick={() => onDelete(c.id)}>Delete</button>
