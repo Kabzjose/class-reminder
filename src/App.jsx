@@ -10,6 +10,8 @@ import { deleteClass, updateClass } from "./utils/storage";
 function App() {
   const [classes, setClasses] = useState([]);
   const [editingClass, setEditingClass] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterDay, setFilterDay] = useState("All");
 
   useEffect(() => {
     setClasses(getClasses());
@@ -42,6 +44,16 @@ function App() {
     setClasses(getClasses());
     setEditingClass(null);
   };
+  const filteredClasses = classes.filter((c) => {
+  const matchesSearch =
+    c.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+  const matchesDay =
+    filterDay === "All" || c.days.includes(filterDay);
+
+  return matchesSearch && matchesDay;
+});
+
   return (
     <div>
       <h1>Class Reminder App</h1>
@@ -50,9 +62,27 @@ function App() {
         onUpdate={handleUpdate}
         editingClass={editingClass}
       />
+    <input
+  type="text"
+  placeholder="Search by class name"
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+/>
+
+<select
+  value={filterDay}
+  onChange={(e) => setFilterDay(e.target.value)}
+>
+  <option value="All">All Days</option>
+  <option value="Monday">Monday</option>
+  <option value="Tuesday">Tuesday</option>
+  <option value="Wednesday">Wednesday</option>
+  <option value="Thursday">Thursday</option>
+  <option value="Friday">Friday</option>
+</select>
 
       <Timetable
-        classes={classes}
+        classes={filteredClasses}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
