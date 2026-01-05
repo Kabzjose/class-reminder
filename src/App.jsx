@@ -44,6 +44,7 @@ function App() {
     setClasses(getClasses());
     setEditingClass(null);
   };
+  //filtering logic
   const filteredClasses = classes.filter((c) => {
   const matchesSearch =
     c.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -53,6 +54,39 @@ function App() {
 
   return matchesSearch && matchesDay;
 });
+
+//Next Class + Countdown
+const getTodayName = () => {
+  return new Date().toLocaleDateString("en-US", { weekday: "long" });
+};
+
+const timeToMinutes = (time) => {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+};
+
+const now = new Date();
+const today = getTodayName();
+const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+const upcomingClasses = classes
+  .filter((c) => c.days.includes(today))
+  .map((c) => ({
+    ...c,
+    startMinutes: timeToMinutes(c.startTime),
+  }))
+  .filter((c) => c.startMinutes > currentMinutes)
+  .sort((a, b) => a.startMinutes - b.startMinutes);
+
+const nextClass = upcomingClasses[0] || null;
+let countdown = null;
+
+if (nextClass) {
+  const diff = nextClass.startMinutes - currentMinutes;
+  const hours = Math.floor(diff / 60);
+  const minutes = diff % 60;
+  countdown = `${hours}h ${minutes}m`;
+}
 
   return (
     <div>
@@ -80,6 +114,17 @@ function App() {
   <option value="Thursday">Thursday</option>
   <option value="Friday">Friday</option>
 </select>
+      {nextClass ? (
+  <div style={{ padding: "12px", border: "1px solid #ccc", marginBottom: "16px" }}>
+    <h3>Next Class</h3>
+    <p><strong>{nextClass.name}</strong></p>
+    <p>{nextClass.startTime} – {nextClass.endTime}</p>
+    <p>Venue: {nextClass.venue}</p>
+    <p>Starts in: {countdown}</p>
+  </div>
+) : (
+  <p>No more classes today</p>
+)}
 
       <Timetable
         classes={filteredClasses}
