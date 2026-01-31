@@ -7,7 +7,7 @@ const router=express.Router()
 
 router.post("/", createClass);
 router.get("/", getClass);
-router.patch("/:id", updateClass);
+router.put("/:id", updateClass);
 router.delete("/:id", deleteClass);
 
 
