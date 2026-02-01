@@ -1,4 +1,4 @@
-import User from "../models/user";
+import User from "../models/user.js";
 import jwt from "jsonwebtoken"
 
 
@@ -31,5 +31,5 @@ const protect= async(req,res)=>{
   }
 };
 
-module.exports = { protect };
+export default protect;
    
