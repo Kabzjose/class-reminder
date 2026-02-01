@@ -10,7 +10,7 @@ const createClass= async(req,res)=>{
    if(!name || !days || !startTime|| !endTime || !venue || !reminderMinutes){
     return res.status(400).json({message:"All fields are required"})
    }
-   const unitClass=await Class.create({name,days,startTime,endTime,venue,reminderMinutes});
+   const unitClass=await Class.create({name,days,startTime,endTime,venue,reminderMinutes,user:req.user.id});
    return res.status(201).json({
     message:"Class created successfully",
     unitClass
@@ -26,7 +26,7 @@ const createClass= async(req,res)=>{
 //get all classes
 const getClass=async(req,res)=>{
     try{
-        const getClass=await Class.find();
+        const getClass=await Class.find({user:req.user.id});//only get users classes
         res.status(200).json({
             message:"classes fetched successfully",
             getClass

@@ -1,9 +1,11 @@
 import express from "express";
-
+import protect from "../middleware/auth"
 import {getClass,createClass,updateClass, deleteClass} from "../controllers/classControllers.js";
 
 const router=express.Router()
 
+//all routes require aurhentication
+router.use(protect)
 
 router.post("/", createClass);
 router.get("/", getClass);

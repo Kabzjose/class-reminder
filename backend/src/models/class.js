@@ -23,7 +23,12 @@ const classSchema = new mongoose.Schema(
         type:String,
         required:true
     },
-    reminderMinutes: Number
+    reminderMinutes: Number,
+    user:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'User',
+      required:true
+    }
   },
   { timestamps: true }
 );
