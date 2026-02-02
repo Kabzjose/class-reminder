@@ -6,6 +6,6 @@ import protect from "../middleware/auth.js"
 
 router.post('/register',registerUser)
 router.post('/login',login)
-router.get('/',protect,getCurrentUser)
+router.get('/me',protect,getCurrentUser)
 
 export default router

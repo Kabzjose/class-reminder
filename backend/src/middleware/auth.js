@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 
 //This middleware acts as a gatekeeper for protected routes. It ensures that only authenticated users (those with valid tokens) can access certain endpoints.
 
-const protect= async(req,res)=>{
+const protect= async(req,res,next)=>{
     try {
         let token;
         //check  for token in header
