@@ -69,28 +69,57 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
     });
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      
-      {/* Form Header removed (handled by parent container title in App.js) or kept subtle */}
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-sm uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider">
-          {editingClass ? "Edit Class Details" : "Add New Class"}
-        </h3>
-        {editingClass && (
-           <span className="text-xs text-orange-500 font-semibold">Editing Mode</span>
-        )}
-      </div>
+  const handleCancel = () => {
+    setForm({
+      id: null,
+      name: "",
+      startTime: "",
+      endTime: "",
+      days: [],
+      venue: "",
+      reminderMinutes: 10,
+      lastNotifiedDate: null,
+      notes: "",
+      materials: ""
+    });
+  };
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      
+      {/* Editing Mode Indicator */}
+      {editingClass && (
+        <div className="flex items-center justify-between p-4 bg-orange-50 dark:bg-orange-900/20 border-l-4 border-orange-500 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <span className="text-2xl">✏️</span>
+            <div>
+              <p className="font-semibold text-orange-800 dark:text-orange-300">Editing Mode</p>
+              <p className="text-sm text-orange-600 dark:text-orange-400">You're editing: {editingClass.name}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="px-3 py-1 bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200 rounded-lg hover:bg-orange-300 dark:hover:bg-orange-700 transition text-sm font-medium"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Course Name */}
         <div className="col-span-1 md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course Name *</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+            <span>📚</span>
+            <span>Course Name</span>
+            <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="name"
-            placeholder="e.g. Data Structures"
-            className="w-full p-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            placeholder="e.g. Data Structures & Algorithms"
+            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300"
             value={form.name}
             onChange={handleChange}
           />
@@ -98,11 +127,15 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
 
         {/* Start Time */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Time *</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+            <span>🕐</span>
+            <span>Start Time</span>
+            <span className="text-red-500">*</span>
+          </label>
           <input
             type="time"
             name="startTime"
-            className="w-full p-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300"
             value={form.startTime}
             onChange={handleChange}
           />
@@ -110,11 +143,14 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
 
         {/* End Time */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Time</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+            <span>🕐</span>
+            <span>End Time</span>
+          </label>
           <input
             type="time"
             name="endTime"
-            className="w-full p-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300"
             value={form.endTime}
             onChange={handleChange}
           />
@@ -122,12 +158,15 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
 
         {/* Venue */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Venue</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+            <span>📍</span>
+            <span>Venue</span>
+          </label>
           <input
             type="text"
             name="venue"
-            placeholder="e.g. Room 304"
-            className="w-full p-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+            placeholder="e.g. Room 304, Lab B"
+            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300"
             value={form.venue}
             onChange={handleChange}
           />
@@ -135,25 +174,35 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
 
         {/* Reminder Minutes */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Reminder (mins)</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+            <span>⏱️</span>
+            <span>Reminder (minutes)</span>
+          </label>
           <input
             type="number"
             name="reminderMinutes"
             min="1"
-            className="w-full p-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+            max="120"
+            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300"
             value={form.reminderMinutes}
             onChange={handleChange}
           />
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            You'll be notified {form.reminderMinutes} min before class
+          </p>
         </div>
 
         {/* Materials Link */}
         <div className="col-span-1 md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Materials Link (Optional)</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+            <span>🔗</span>
+            <span>Materials Link</span>
+          </label>
           <input
             type="url"
             name="materials"
-            placeholder="https://..."
-            className="w-full p-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+            placeholder="https://drive.google.com/..."
+            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300"
             value={form.materials}
             onChange={handleChange}
           />
@@ -161,12 +210,15 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
 
         {/* Notes */}
         <div className="col-span-1 md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+            <span>📝</span>
+            <span>Additional Notes</span>
+          </label>
           <textarea
             name="notes"
             rows="3"
-            placeholder="Any specific details..."
-            className="w-full p-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition resize-none"
+            placeholder="Any important details, assignments, or reminders..."
+            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-300 resize-none"
             value={form.notes}
             onChange={handleChange}
           />
@@ -175,8 +227,12 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
 
       {/* Days Selection */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Days *</label>
-        <div className="flex flex-wrap gap-2">
+        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center space-x-1">
+          <span>📅</span>
+          <span>Select Days</span>
+          <span className="text-red-500">*</span>
+        </label>
+        <div className="flex flex-wrap gap-3">
           {DAYS.map((day) => {
             const isSelected = form.days.includes(day);
             return (
@@ -184,30 +240,56 @@ function ClassForm({ onSave, onUpdate, editingClass }) {
                 key={day}
                 type="button"
                 onClick={() => handleDayToggle(day)}
-                className={`px-4 py-2 text-sm rounded-full border transition-all duration-200 
+                className={`
+                  px-6 py-3 text-sm font-semibold rounded-xl border-2 transition-all duration-300 transform hover:scale-105 
                   ${isSelected 
-                    ? "bg-blue-600 border-blue-600 text-white shadow-md hover:bg-blue-700" 
-                    : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  }`}
+                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 border-blue-600 text-white shadow-lg hover:shadow-xl" 
+                    : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 shadow-sm"
+                  }
+                `}
               >
-                {day}
+                <div className="flex items-center space-x-2">
+                  <span>{isSelected ? "✓" : ""}</span>
+                  <span>{day}</span>
+                </div>
               </button>
             );
           })}
         </div>
+        {form.days.length === 0 && (
+          <p className="text-xs text-red-500 mt-2">Please select at least one day</p>
+        )}
       </div>
 
-      {/* Submit Button */}
-      <button
-        type="submit"
-        className={`w-full font-bold py-3 px-4 rounded-lg shadow-md transition duration-300 transform hover:-translate-y-0.5 
-          ${editingClass 
-            ? "bg-green-600 hover:bg-green-700 text-white" 
-            : "bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
-          }`}
-      >
-        {editingClass ? "💾 Save Changes" : "➕ Add Class"}
-      </button>
+      {/* Submit Buttons */}
+      <div className="flex gap-3 pt-4">
+        {editingClass && (
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="flex-1 font-bold py-4 px-6 rounded-xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg"
+          >
+            Cancel
+          </button>
+        )}
+        <button
+          type="submit"
+          className={`
+            ${editingClass ? 'flex-1' : 'w-full'}
+            font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 
+            ${editingClass 
+              ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700" 
+              : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+            }
+            text-white
+          `}
+        >
+          <span className="flex items-center justify-center space-x-2">
+            <span>{editingClass ? "💾" : "➕"}</span>
+            <span>{editingClass ? "Save Changes" : "Add Class"}</span>
+          </span>
+        </button>
+      </div>
 
     </form>
   );
