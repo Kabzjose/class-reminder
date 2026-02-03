@@ -37,6 +37,8 @@ A personal class timetable web app that helps students organize classes, track u
 ## Tech Stack
 
 * **Frontend:** React (functional components, hooks)
+* **Backend:** Expressjs MongoDB, Node.js
+* **Authentication:** JWT tokens bycrpt for hashing passwords
 * **Styling:** Tailwind CSS
 * **State Management:** React `useState`, derived state
 * **Persistence:** Local component state (localStorage-ready)
