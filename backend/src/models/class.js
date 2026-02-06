@@ -23,7 +23,13 @@ const classSchema = new mongoose.Schema(
         type:String,
         required:true
     },
-    reminderMinutes: Number,
+    reminderMinutes: {
+    type: Number,
+    default: 10,
+  },
+    notes: String,
+  materials: String,
+  lastNotifiedDate: Date,
     user:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'User',
