@@ -7,6 +7,6 @@ export const createClass = () => ({
   venue: "",
   reminderMinutes: 30,
    notes: "",          // Optional text notes
-  materials: ""      // Optional link to PDF, URL, or Google Drive
+  materials: ""  ,    // Optional link to PDF, URL, or Google Drive
   lastNotifiedDate: null // "YYYY-MM-DD"
 });

@@ -103,8 +103,8 @@ function App() {
           >
             {darkMode ? "☀️" : "🌙"}
           </button>
-
-          {showRegister ? (
+            
+        {showRegister ? (
             <Register 
               onRegister={handleRegister}
               onSwitchToLogin={() => setShowRegister(false)}
@@ -113,8 +113,9 @@ function App() {
             <Login 
               onLogin={handleLogin}
               onSwitchToRegister={() => setShowRegister(true)}
-            />
+            /> 
           )}
+          
         </div>
       </div>
     );
