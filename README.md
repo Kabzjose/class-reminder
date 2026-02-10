@@ -1,153 +1,198 @@
-# React + Vite
+Class Reminder Application (MERN Stack)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack class scheduling and reminder application built with the MERN stack, featuring secure authentication, user-scoped CRUD operations, and a protected frontend architecture.
 
-Currently, two official plugins are available# Timetable App
+This project demonstrates production-style backend authorization, frontend state management, and API design — not just basic CRUD.
 
-A personal class timetable web app that helps students organize classes, track upcoming sessions, and avoid schedule confusion. Built with **React** and **Tailwind CSS**, the app focuses on clean state management, predictable logic, and real-world usability.
+🚀 Features
+Authentication & Security
 
----
+User registration and login
 
-## Features
+Password hashing with bcrypt
 
-### Core Features
+JWT-based authentication
 
-* Add classes with:
+Protected routes (frontend + backend)
 
-  * Course name
-  * Days of the week (Monday–Friday)
-  * Start and end time
-  * Venue
-  * Reminder time
-* Weekly timetable displayed in a **day-based grid**
-* Classes automatically **sorted by start time**
-* Edit and delete classes
+Users can only access their own data
 
-### Nice-to-Have Enhancements
+Class Management
 
-* Search classes by name
-* Filter classes by day
-* "Next Class" panel with countdown
-* Light / Dark theme toggle
-* Export timetable as JSON
-* Import timetable from JSON
+Create, read, update, delete classes
 
----
+Classes are strictly scoped to the authenticated user
 
-## Tech Stack
+Clean RESTful API design
 
-* **Frontend:** React (functional components, hooks)
-* **Backend:** Expressjs MongoDB, Node.js
-* **Authentication:** JWT tokens bycrpt for hashing passwords
-* **Styling:** Tailwind CSS
-* **State Management:** React `useState`, derived state
-* **Persistence:** Local component state (localStorage-ready)
+Frontend
 
----
+React with modern hooks
 
-## Project Structure
+Context API for authentication state
 
-```
-src/
-├── components/
-│   ├── ClassForm.jsx
-│   ├── TimetableGrid.jsx
-│   ├── NextClass.jsx (optional)
-│
-├── App.jsx
-├── main.jsx
-├── index.css
-```
+Protected routes
 
----
+Controlled forms with proper state handling
 
-## Design Principles
+Backend
 
-* **Single source of truth:** `classes` state lives in `App.jsx`
-* **Derived state only:** filtering, sorting, countdowns are never stored
-* **Separation of concerns:**
+Node.js & Express
 
-  * App → logic & state
-  * Components → presentation only
-* **Predictable rendering:** no mutation of source state
+MongoDB with Mongoose
 
----
+Middleware-based authentication
 
-## How Sorting Works
+Clean separation of routes, controllers, and models
 
-* Classes are grouped by day
-* Each day's classes are sorted by `startTime` (HH:MM format)
-* Sorting happens **before rendering**, never inside JSX
+🧱 Tech Stack
 
----
+Frontend
 
-## Import / Export Format
+React
 
-Timetables are exported as JSON:
+React Router
 
-```json
-[
-  {
-    "id": "uuid",
-    "name": "Math",
-    "days": ["Monday", "Wednesday"],
-    "startTime": "10:00",
-    "endTime": "11:00",
-    "venue": "Room 101",
-    "reminderMinutes": 10
-  }
-]
-```
+Axios
 
-Only valid arrays are accepted during import.
+Context API
 
----
+Backend
 
-## Known Limitations
+Node.js
 
-* Notifications depend on browser support
-* No backend (data is local only)
-* Weekend classes are not supported by default
+Express
 
----
+MongoDB
 
-## Future Improvements
+Mongoose
 
-* LocalStorage persistence
-* Class overlap detection
-* Mobile-first layout
-* Calendar (.ics) export
-* Push notification support
+JSON Web Tokens (JWT)
 
----
+bcryptjs
 
-## Why This Project Matters
+📁 Project Structure
+Backend
+backend/
+├── src/
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   └── classController.js
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   ├── models/
+│   │   ├── user.js
+│   │   └── class.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   └── classRoutes.js
+│   ├── utils/
+│   │   └── token.js
+│   └── server.js
+└── package.json
 
-This project emphasizes **software engineering fundamentals**, not just UI:
+Frontend
+frontend/
+├── src/
+│   ├── components/
+│   ├── context/
+│   │   └── AuthContext.jsx
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   └── Dashboard.jsx
+│   ├── services/
+│   │   └── api.js
+│   └── App.jsx
+└── package.json
 
-* Correct state ownership
-* Clean data flow
-* Logic before styling
-* Incremental, testable features
+🔐 Authentication Flow
 
-It is suitable for learning, demos, and portfolio use.
+User registers or logs in
 
----
+Passwords are hashed before storage
 
-## License
+JWT is issued on successful authentication
 
-MIT License
-:
+JWT is required to access protected endpoints
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Backend validates token and user ownership on every request
 
-## React Compiler
+This prevents:
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Unauthorized access
 
-Note: This will impact Vite dev & build performances.
+Cross-user data leaks
 
-## Expanding the ESLint configuration
+Direct ID manipulation attacks
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🔑 Environment Variables
+
+Create a .env file in the backend root:
+
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+
+▶️ Running the Project
+Backend
+cd backend
+npm install
+npm run dev
+
+Frontend
+cd frontend
+npm install
+npm run dev
+
+
+Frontend runs on http://localhost:5173
+Backend runs on http://localhost:5000
+
+🧪 API Endpoints (Summary)
+Auth
+
+POST /api/auth/register – Register user
+
+POST /api/auth/login – Login user
+
+Classes (Protected)
+
+GET /api/classes – Get user classes
+
+POST /api/classes – Create class
+
+PUT /api/classes/:id – Update class
+
+DELETE /api/classes/:id – Delete class
+
+🛡️ Security Considerations
+
+Passwords are never stored in plain text
+
+JWT is validated on every protected request
+
+Users cannot access or modify other users’ data
+
+Backend enforces ownership checks at the database level
+
+📌 Future Improvements
+
+Refresh token rotation
+
+Rate limiting on auth routes
+
+Role-based access control (admin/user)
+
+Input validation with Joi or Zod
+
+Deployment (Render / Vercel / MongoDB Atlas)
+
+👤 Author
+
+Built by [Your Name]
+Role: Full-Stack Developer (MERN)
+
+✅ Final Note
+
+This project is designed as a production-style MERN application, not a tutorial demo. It focuses on correct architecture, security, and state management, forming a strong foundation for real-world applications.
